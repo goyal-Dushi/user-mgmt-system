@@ -1,0 +1,19 @@
+{
+  "name": "user-mgmt-system",
+  "version": "1.0.0",
+  "description": "\"managing users of organization\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dushyant",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
