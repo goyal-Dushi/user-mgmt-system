@@ -2,6 +2,8 @@ import { Container, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 function UserHome() {
+  console.log("Home Compnent rendered!");
+
   return (
     <>
       <Typography
@@ -18,18 +20,16 @@ function UserHome() {
           justifyContent: "space-evenly",
           flexDirection: "row",
         }}>
-        <Button variant={"outlined"} color={"primary"}>
-          <Link style={{ textDecoration: "none" }} to={"/userlogin"}>
+        <Link to={"/userlogin"}>
+          <Button variant={"outlined"} color={"primary"}>
             {"Login"}
-          </Link>
-        </Button>
-        <Button variant={"contained"} color={"primary"}>
-          <Link
-            style={{ textDecoration: "none", color: "white" }}
-            to={"/userRegister"}>
+          </Button>
+        </Link>
+        <Link to={"/userRegister"}>
+          <Button variant={"contained"} color={"primary"}>
             {"Register"}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </Container>
     </>
   );
