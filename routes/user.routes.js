@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router
-  .route("/")
+  .route("/login")
   .get((req, res) => {
     res.send("This is login page for the user");
   })
@@ -14,7 +14,6 @@ router
       } else if (!data) {
         res.json({
           msg: "Unable to find user. Incorrect Password or Email",
-          type: "error",
           status: false,
         });
       } else {
@@ -22,7 +21,6 @@ router
           userID: data?._id,
           status: true,
           msg: "User Login successful!",
-          type: "success",
         });
       }
     });
@@ -38,16 +36,28 @@ router
 
     newUser.save((err, data) => {
       if (err) {
-        res.status(400).json({ msg: "Not able to register user" });
+        res
+          .status(400)
+          .json({ msg: "Not able to register user", status: false });
       } else {
         res.status(200).json({
           msg: "User registered successfully",
+          status: true,
           userID: data._id,
-          type: "success",
         });
       }
     });
   });
+
+router.route("/").get((req, res) => {
+  User.find({}, (err, response) => {
+    if (err) {
+      res.status(403).json({ msg: "Not able to get users!", error: err });
+    } else {
+      res.status(200).json(response);
+    }
+  });
+});
 
 router
   .route("/:id")
@@ -62,32 +72,29 @@ router
     });
   })
   .put((req, res) => {
-    const phone = req.body.mobileNum;
-    const userEmail = req.body.email;
-    const pwd = req.body.password;
     const id = req.params.id;
-    const adminAccess = req.body.role;
-
-    User.findByIdAndUpdate(
-      id,
-      {
-        email: userEmail,
-        password: pwd,
-        phoneNum: phone,
-        role: adminAccess,
-      },
-      (err) => {
-        if (err) {
-          res
-            .status(400)
-            .json({ msg: "User details cannot be updated", error: err });
-        } else {
-          res
-            .status(200)
-            .json({ msg: "User details updated successfully!", type: "info" });
-        }
+    User.findByIdAndUpdate(id, req.body, (err) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ msg: "User details cannot be updated", error: err });
+      } else {
+        res.status(200).json({ msg: "User details updated successfully!" });
       }
-    );
+    });
+  })
+  .delete((req, res) => {
+    const id = req.params.id;
+
+    User.findByIdAndDelete(id, (err, response) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ msg: "Error occurred while deleting", error: err });
+      } else {
+        res.status(200).json({ msg: "Successfully Deleted User!" });
+      }
+    });
   });
 
 module.exports = router;
