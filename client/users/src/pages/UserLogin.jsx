@@ -9,12 +9,14 @@ function UserLogin(props) {
     password: "",
   });
 
+  console.log("Login component rendered!");
+
   const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await axios
-      .post("http://localhost:5000/users/", user)
+      .post("http://localhost:5000/users/login/", user)
       .then((res) => res.data)
       .catch((err) => {
         console.log("Error: ", err);
@@ -26,7 +28,7 @@ function UserLogin(props) {
       props.setPopup({
         display: response?.msg,
         show: true,
-        type: response?.type,
+        type: "success",
       });
       history.push("/userProfile/" + response?.userID);
     } else {
@@ -34,7 +36,7 @@ function UserLogin(props) {
       props.setPopup({
         display: response?.msg,
         show: true,
-        type: response?.type,
+        type: "error",
       });
     }
   };
