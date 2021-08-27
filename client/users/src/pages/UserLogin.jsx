@@ -22,9 +22,7 @@ function UserLogin(props) {
         console.log("Error: ", err);
       });
     setUser({ email: "", password: "" });
-    console.log("Response Login: ", response);
     if (response?.status) {
-      // console.log(response?.msg);
       props.setPopup({
         display: response?.msg,
         show: true,
@@ -32,7 +30,6 @@ function UserLogin(props) {
       });
       history.push("/userProfile/" + response?.userID);
     } else {
-      // console.log(response?.msg);
       props.setPopup({
         display: response?.msg,
         show: true,
