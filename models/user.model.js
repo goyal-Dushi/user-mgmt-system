@@ -20,10 +20,11 @@ const userDetail = new mongoose.Schema({
   },
   about: {
     type: String,
-    maxLength: 80,
+    maxLength: 50,
   },
   role: {
     type: Boolean,
+    required: true,
   },
 });
 
