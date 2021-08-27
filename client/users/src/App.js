@@ -5,7 +5,8 @@ import UserRegister from "./pages/UserRegister";
 import UserProfile from "./pages/UserProfile";
 import UserHome from "./pages/UserHome";
 import { Alert } from "@material-ui/lab";
-import { useState } from "react";
+import { createContext, useState } from "react";
+import UsersList from "./pages/UsersList";
 
 const useStyles = makeStyles({
   alertStyle: {
@@ -16,6 +17,8 @@ const useStyles = makeStyles({
     },
   },
 });
+
+export const AlertContext = createContext();
 
 function App() {
   const [alert, setAlert] = useState({
@@ -43,15 +46,19 @@ function App() {
       <Router>
         <Switch>
           <Route path={"/"} exact component={UserHome} />
-          <Route path={"/userlogin"} exact>
-            <UserLogin setPopup={setAlert} />
-          </Route>
-          <Route path={"/userRegister"} exact>
-            <UserRegister setPopup={setAlert} />
-          </Route>
-          <Route path={"/userProfile/:id"} exact>
-            <UserProfile setPopup={setAlert} />
-          </Route>
+          <AlertContext.Provider
+            value={{ setPopup: setAlert, alertVal: alert }}>
+            <Route path={"/userlogin"} exact>
+              <UserLogin setPopup={setAlert} />
+            </Route>
+            <Route path={"/userRegister"} exact>
+              <UserRegister setPopup={setAlert} />
+            </Route>
+            <Route path={"/userProfile/:id"} exact>
+              <UserProfile setPopup={setAlert} />
+            </Route>
+            <Route path={"/usersList"} component={UsersList} />
+          </AlertContext.Provider>
         </Switch>
       </Router>
     </Container>
