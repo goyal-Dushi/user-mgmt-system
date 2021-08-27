@@ -5,21 +5,24 @@ import {
   CardHeader,
   CardContent,
   CardActions,
-  TextField,
+  Backdrop,
+  Modal,
   Button,
   Collapse,
   Avatar,
+  Paper,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import CreateUserFrom from "../components/createUserForm";
 
-function UserProfile(props) {
+function UserProfile() {
   const [expand, setExpand] = useState(false);
   const [editState, setEditState] = useState(false);
   const [userDetail, setUserDetail] = useState({});
-  const [editUser, setUserEdit] = useState({});
-
+  // const [editUser, setUserEdit] = useState({});
+  console.log("Profile component rendered!");
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,26 +34,10 @@ function UserProfile(props) {
           console.log("Error: ", err);
         });
       setUserDetail(data);
-      setUserEdit(data);
+      // setUserEdit(data);
     };
     getDetail();
-  }, [id]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await axios
-      .put("http://localhost:5000/users/" + id)
-      .then((res) => res.data)
-      .catch((err) => {
-        console.log("Error: ", err);
-      });
-    props.setPopup({
-      show: true,
-      display: response?.msg,
-      type: response?.type,
-    });
-    setUserDetail(editUser);
-  };
+  }, [id, editState]);
 
   return (
     <>
@@ -99,85 +86,50 @@ function UserProfile(props) {
           </Collapse>
         </Card>
       </Container>
-      <Button
-        onClick={() => setEditState(!editState)}
-        variant={"contained"}
-        color={"secondary"}>
-        {"Edit"}
-      </Button>
-      {editState ? (
-        <Container maxWidth={"md"} style={{ marginTop: "50px" }}>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <TextField
-              value={editUser.name}
-              //   editUser
-              onChange={(e) =>
-                setUserEdit({ ...editUser, name: e.target.value })
-              }
-              variant={"outlined"}
-              color={"primary"}
-              fullWidth
-              label={"Name"}
-              placeholder={"Enter your name"}
-              margin={"dense"}
-            />
-            <TextField
-              value={editUser.email}
-              onChange={(e) =>
-                setUserEdit({ ...editUser, email: e.target.value })
-              }
-              variant={"outlined"}
-              color={"primary"}
-              fullWidth
-              type={"email"}
-              label={"Email"}
-              placeholder={"Enter your Email"}
-              margin={"dense"}
-            />
-            <TextField
-              value={editUser.phoneNum}
-              onChange={(e) =>
-                setUserEdit({ ...editUser, phoneNum: e.target.value })
-              }
-              variant={"outlined"}
-              type={"phone"}
-              color={"primary"}
-              fullWidth
-              label={"Phone Number"}
-              placeholder={"Enter your Mobile Number"}
-              margin={"dense"}
-            />
-            <TextField
-              value={editUser.about}
-              onChange={(e) =>
-                setUserEdit({ ...editUser, about: e.target.value })
-              }
-              variant={"outlined"}
-              color={"primary"}
-              fullWidth
-              multiline
-              label={"About you"}
-              placeholder={"Enter few lines about yourself.."}
-              margin={"dense"}
-            />
-            <TextField
-              value={editUser.password}
-              onChange={(e) =>
-                setUserEdit({ ...editUser, password: e.target.value })
-              }
-              variant={"outlined"}
-              color={"primary"}
-              fullWidth
-              type={"password"}
-              label={"Password"}
-              placeholder={"Enter your name"}
-              margin={"dense"}
-            />
-            <Button type={"submit"} variant={"contained"} color={"primary"}>
-              {"Edit"}
+      <Container
+        style={{ display: "flex", justifyContent: "space-evenly" }}
+        maxWidth={"xs"}>
+        <Button
+          onClick={() => setEditState(!editState)}
+          variant={"contained"}
+          color={"secondary"}>
+          {"Edit"}
+        </Button>
+        {userDetail?.role ? (
+          <Link to={"/usersList"}>
+            <Button variant={"outlined"} color={"primary"}>
+              {"Show All Users"}
             </Button>
-          </form>
-        </Container>
+          </Link>
+        ) : null}
+      </Container>
+      {editState ? (
+        <Modal
+          open={editState}
+          onClose={() => setEditState(!editState)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}>
+          <Paper
+            style={{
+              height: "fit-content",
+              width: "fit-content",
+              padding: "5px",
+            }}>
+            <CreateUserFrom
+              type={"edit"}
+              userInfo={userDetail}
+              setModal={setEditState}
+            />
+          </Paper>
+        </Modal>
       ) : null}
     </>
   );
