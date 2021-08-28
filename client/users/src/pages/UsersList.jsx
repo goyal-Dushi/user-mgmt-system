@@ -47,7 +47,7 @@ function UsersList() {
   const [usersList, setUsersList] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [editUser, setEditUser] = useState({ _id: "" });
+  const [editUser, setEditUser] = useState([]);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
@@ -58,10 +58,15 @@ function UsersList() {
         .catch((err) => {
           console.log("Error: ", err);
         });
-      //   console.log("Users Data: ", data);
       setUsersList(data);
     };
-    getUsers();
+    if (!modal) {
+      getUsers();
+    }
+  }, [modal]);
+
+  useEffect(() => {
+    document.title = "All users";
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -73,34 +78,39 @@ function UsersList() {
     setPage(0);
   };
 
-  if (editUser?._id) {
-    const user = usersList.filter((user) => user._id === editUser._id);
-    console.log("user from userlist: ", user);
-    setEditUser({ ...user });
-    console.log("editUser: ", editUser);
+  const handleEdit = (id) => {
     setModal(true);
-  }
+    setEditUser([usersList.filter((user) => user._id === id)[0], "edit"]);
+  };
+
+  const handleDelete = async (id) => {
+    setModal(true);
+    setEditUser([usersList.filter((user) => user._id === id)[0], "delete"]);
+  };
 
   const getData = (row) => {
     const valuesArr = [];
+    let k = 0;
     for (const item of Object.entries(row)) {
+      k++;
       if (item[0] === "__v" || item[0] === "password") {
         continue;
       } else if (item[0] === "_id") {
         valuesArr.push(
-          <TableCell colSpan={2}>
+          <TableCell align={"center"} key={k} colSpan={2}>
             <Button
               size={"small"}
               variant={"outlined"}
-              onClick={() => setEditUser({ _id: item[1] })}
-              style={{ marginRight: "1px" }}
+              onClick={() => handleEdit(item[1])}
+              style={{ margin: "2px" }}
               color={"primary"}>
               {"Edit"}
             </Button>
             <Button
               size={"small"}
               variant={"outlined"}
-              style={{ marginLeft: "4px" }}
+              onClick={() => handleDelete(item[1])}
+              style={{ margin: "2px" }}
               color={"secondary"}>
               {"Delete"}
             </Button>
@@ -108,45 +118,61 @@ function UsersList() {
         );
       } else if (item[0] === "role") {
         if (item[1]) {
-          valuesArr.push(<TableCell> {"Admin"} </TableCell>);
+          valuesArr.push(
+            <TableCell align={"center"} key={k}>
+              {"Admin"}
+            </TableCell>
+          );
         } else {
-          valuesArr.push(<TableCell> {"User"} </TableCell>);
+          valuesArr.push(
+            <TableCell align={"center"} key={k}>
+              {"User"}
+            </TableCell>
+          );
         }
       } else {
-        valuesArr.push(<TableCell> {item[1]} </TableCell>);
+        valuesArr.push(
+          <TableCell align={"center"} key={k}>
+            {item[1]}
+          </TableCell>
+        );
       }
     }
+    const actions = valuesArr.shift();
+    valuesArr.push(actions);
     return valuesArr;
   };
   return (
     <>
       {modal ? (
-        <Modal
-          open={modal}
-          onClose={() => setModal(false)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}>
-          <Paper
+        <>
+          <Modal
+            open={modal}
+            onClose={() => setModal(false)}
             style={{
-              height: "fit-content",
-              width: "fit-content",
-              padding: "5px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
             }}>
-            <CreateUserForm
-              type={"edit"}
-              userInfo={editUser}
-              setModal={setModal}
-            />
-          </Paper>
-        </Modal>
+            <Paper
+              style={{
+                height: "fit-content",
+                width: "fit-content",
+                padding: "15px",
+              }}>
+              <CreateUserForm
+                type={editUser[1] === "edit" ? "edit" : "delete"}
+                userInfo={editUser[0]}
+                setModal={setModal}
+              />
+            </Paper>
+          </Modal>
+        </>
       ) : null}
       <Container maxWidth={"md"}>
         <Paper>
@@ -167,11 +193,6 @@ function UsersList() {
                   .map((row, i) => {
                     return (
                       <TableRow hover tabIndex={-1} key={i}>
-                        {/* {getData(row).map((value, i) => (
-                          <TableCell align={"center"} key={i}>
-                            {value}
-                          </TableCell>
-                        ))} */}
                         {getData(row)}
                       </TableRow>
                     );
