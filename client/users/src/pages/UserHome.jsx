@@ -1,8 +1,11 @@
 import { Container, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function UserHome() {
-  console.log("Home Compnent rendered!");
+  useEffect(() => {
+    document.title = "Welcome User!";
+  });
 
   return (
     <>
