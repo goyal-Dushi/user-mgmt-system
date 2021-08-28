@@ -1,8 +1,11 @@
 import { Typography } from "@material-ui/core";
+import { useEffect } from "react";
 import CreateUserForm from "../components/createUserForm";
 
 function UserRegister() {
-  console.log("Register component rendered!");
+  useEffect(() => {
+    document.title = "Register User!";
+  }, []);
 
   return (
     <>
