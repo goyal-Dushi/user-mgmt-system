@@ -21,8 +21,6 @@ function UserProfile() {
   const [expand, setExpand] = useState(false);
   const [editState, setEditState] = useState(false);
   const [userDetail, setUserDetail] = useState({});
-  // const [editUser, setUserEdit] = useState({});
-  console.log("Profile component rendered!");
   const { id } = useParams();
 
   useEffect(() => {
@@ -33,8 +31,8 @@ function UserProfile() {
         .catch((err) => {
           console.log("Error: ", err);
         });
+      document.title = `Welcome ${data?.name}!`;
       setUserDetail(data);
-      // setUserEdit(data);
     };
     getDetail();
   }, [id, editState]);
@@ -121,7 +119,7 @@ function UserProfile() {
             style={{
               height: "fit-content",
               width: "fit-content",
-              padding: "5px",
+              padding: "15px 10px",
             }}>
             <CreateUserFrom
               type={"edit"}
