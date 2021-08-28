@@ -1,7 +1,7 @@
 import { TextField, Typography, Container, Button } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 function UserLogin(props) {
   const [user, setUser] = useState({
@@ -9,7 +9,9 @@ function UserLogin(props) {
     password: "",
   });
 
-  console.log("Login component rendered!");
+  useEffect(() => {
+    document.title = "Login Page";
+  }, []);
 
   const history = useHistory();
 
@@ -73,13 +75,18 @@ function UserLogin(props) {
             placeholder={"Enter your Password"}
             type={"password"}
           />
-          <Button
-            type={"submit"}
-            fullWidth
-            color={"primary"}
-            variant={"contained"}>
-            {"Login"}
-          </Button>
+          <Container style={{ marginTop: "8px" }} maxWidth={"sm"}>
+            <Button type={"submit"} color={"primary"} variant={"contained"}>
+              {"Login"}
+            </Button>
+            <Link
+              to={"/userRegister"}
+              style={{ textDecoration: "none", marginLeft: "8px" }}>
+              <Button color={"primary"} variant={"outlined"}>
+                {"Register"}
+              </Button>
+            </Link>
+          </Container>
         </form>
       </Container>
     </>
