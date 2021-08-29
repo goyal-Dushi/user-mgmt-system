@@ -1,8 +1,8 @@
-# Welcome All 👋 User management System
+# Welcome All 👋
 
 ## Overview 😄 
 
-This is a full stack web appliation of an **User Management System**
+This is a full stack web appliation in (***MERN***) of an **User Management System**
 
 ## If you find my efforts useful, do leave a ⭐
 
