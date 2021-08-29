@@ -1,16 +1,18 @@
-# Welcome All
+# Welcome All 👋 User management System
 
-## Overview
+## Overview 😄 
 
-This is a full stack web appliation that mimics the behaviour of a user management system
+This is a full stack web appliation of an **User Management System**
 
-## Table of Contents
+## If you find my efforts useful, do leave a ⭐
+
+## Table of Contents 📑
 
 - [Description](##description)
-- [Usage & Installation](##usage-&-installation)
+- [Usage & Installation](##usage-and-installation)
 - [Contribution Guidelines](##contribution-guidelines)
 
-## Description
+## Description 💁
 
 In this project, the users are distinguished based on their role, i.e either they are admin or they are normal users.
 
@@ -21,23 +23,21 @@ There is authentication based on their `Email id's` & `Password`, after verifica
 For the time being , Admin access can be granted to user by making changes by directly accessing the database. No functionality has
 been added in the frontend to enable users to decide their roles.
 
-## Usage & Installation
+## Usage and Installation
 
-The root dir of the project contains the backend made with Node & express. The frontend is inside the client dir.
+The root dir of the project contains the backend made with Node & express. The frontend is inside the client dir.Thus, you will have two **`package.json`** files, one for backend Node and one for frontend React
 
-### Once you download or clone the project to you local repo.You will have separate package.json files for both frontend (inside client dir) & backend , in the root of the project
-
-- Hit `npm install` for each dir (root & client) to install the dependencies for backend and frontend
+- Hit `npm install` for each dir (root & client) to install the dependencies for backend and frontend respectively
 - Run `node index.js or nodemon index.js` to run the backend
 - To run the React frontend , go to client dir and run `npm start`
 
 You will be redirected to the `localhost:3000` as soon as you run the client.
 
-### **Note** : When running the backend , you should see `Server started at 5000 & Database connection successful` ensuring that your backend server has successfully started and MongoDB database connection has been established
+**Note** : When running the backend , you should see `Server started at 5000 & Database connection successful` ensuring that your backend server has successfully started and MongoDB database connection has been established
 
-### **Note** : You need to have _mongo_ installed on you computer to be able to run the project. If not , install from [here](https://docs.mongodb.com/manual/installation/)
+**Note** : You need to have _mongo_ installed on you computer to be able to run the project. If not , install from [here](https://docs.mongodb.com/manual/installation/)
 
-## Contribution Guidelines
+## Contribution Guidelines 🖥️
 
 - Please wait for the issue to be assigned before addressing any
 - Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
