@@ -3,6 +3,10 @@
 ## Overview 😄 
 
 This is a full stack web appliation in (***MERN***) of an **User Management System**
+Currently, I haven't added any authentication or session mgmt like user sessions using cookies or JWT.
+
+https://user-images.githubusercontent.com/40212568/132102470-e6fc7666-afc6-4ff9-89e7-ee799409ca34.mp4
+
 
 ## If you find my efforts useful, do leave a ⭐
 
